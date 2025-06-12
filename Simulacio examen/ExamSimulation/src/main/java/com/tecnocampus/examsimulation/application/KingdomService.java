@@ -3,7 +3,10 @@ package com.tecnocampus.examsimulation.application;
 import com.tecnocampus.examsimulation.application.dto.KingdomDTO;
 import com.tecnocampus.examsimulation.domain.Kingdom;
 import com.tecnocampus.examsimulation.persistence.KingdomRepository;
+import com.tecnocampus.examsimulation.utilities.NotAcceptableException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.SQLException;
 
@@ -25,13 +28,21 @@ public class KingdomService {
     public KingdomDTO startProduction(String id) {
         Kingdom kingdom = kingdomRepository.getKingdomById(id);
 
-        boolean production = kingdom.dailyProduction();
-        if (production) {
+        boolean noCitizens = kingdom.dailyProduction();
+        if (noCitizens) {
             kingdomRepository.removeKingdomById(id);
-            return null;
+            throw new NotAcceptableException("Kingdom has been destroyed due to lack of citizens.");
         }
         kingdomRepository.updateKingdom(kingdom);
         return kingdom.toDTO();
 
+    }
+
+    public KingdomDTO getKingdomById(String id) {
+        Kingdom kingdom = kingdomRepository.getKingdomById(id);
+        if (kingdom == null) {
+            throw new NotAcceptableException("Kingdom not found with id: " + id);
+        }
+        return kingdom.toDTO();
     }
 }

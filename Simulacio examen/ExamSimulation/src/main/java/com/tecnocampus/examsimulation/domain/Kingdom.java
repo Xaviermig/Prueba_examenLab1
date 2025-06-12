@@ -82,11 +82,13 @@ public class Kingdom {
             gold += 2 * citizens;
             food -= citizens;
         } else {
+            gold += 2 * food;
             citizens -= food;
             food = 0;
         }
         return citizens == 0;
     }
+
 
 
     public void updateKingdom(KingdomDTO kingdom) {
