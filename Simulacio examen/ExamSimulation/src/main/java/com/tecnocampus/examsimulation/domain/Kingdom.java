@@ -39,7 +39,7 @@ public class Kingdom {
         gold = rs.getInt("gold");
         citizens = rs.getInt("citizens");
         food = rs.getInt("food");
-        dateOfCreation = rs.getTimestamp("created_at").toLocalDateTime();
+        dateOfCreation = rs.getTimestamp("dateOfCreation").toLocalDateTime();
     }
 
 
@@ -76,10 +76,32 @@ public class Kingdom {
     public LocalDateTime getDateOfCreation() {
         return dateOfCreation;
     }
+    public boolean dailyProduction (){
+        if (citizens <= 0) return true;
+        if (food >= citizens){
+            gold += 2 * citizens;
+            food -= citizens;
+        } else {
+            citizens -= food;
+            food = 0;
+        }
+        return citizens == 0;
+    }
 
 
+    public void updateKingdom(KingdomDTO kingdom) {
+        if (kingdom == null) {
+            throw new InvalidDataException("Kingdom cannot be null");
+        }
+        setGold(kingdom.gold());
+        setPopulation(kingdom.citizens());
+        setFood(kingdom.food());
+    }
 
     public KingdomDTO toDTO() {
         return new KingdomDTO(kingdomId, gold, citizens, food, dateOfCreation);
     }
+
+
+
 }

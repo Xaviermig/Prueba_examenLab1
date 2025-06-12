@@ -19,6 +19,13 @@ public class KingdomRestController {
     public KingdomDTO createKingdom(@RequestBody KingdomDTO kingdomDTO) throws Exception {
         return kingdomService.createKingdom(kingdomDTO);
     }
+    @PostMapping("/{id}")
+    @ResponseStatus (HttpStatus.OK)
+    @Operation (summary = "Create a new Kingdom with ID")
+    public KingdomDTO startProduction(@PathVariable String id) throws Exception {
+        return kingdomService.startProduction(id);
+
+    }
 
 
 }

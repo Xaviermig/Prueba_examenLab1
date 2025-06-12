@@ -21,4 +21,17 @@ public class KingdomService {
         kingdomRepository.addKingdom(kingdom);
         return kingdom.toDTO();
     }
+
+    public KingdomDTO startProduction(String id) {
+        Kingdom kingdom = kingdomRepository.getKingdomById(id);
+
+        boolean production = kingdom.dailyProduction();
+        if (production) {
+            kingdomRepository.removeKingdomById(id);
+            return null;
+        }
+        kingdomRepository.updateKingdom(kingdom);
+        return kingdom.toDTO();
+
+    }
 }
