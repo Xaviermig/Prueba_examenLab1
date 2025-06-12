@@ -40,7 +40,7 @@ public class KingdomRepository {
                 .param("kingdomId", id)
                 .query((rs,rowNum) -> new Kingdom(rs))
                 .optional()
-                .orElseThrow(() -> new RuntimeException("Kingdom with ID " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Kingdom with ID " + id + " not found"));
     }
 
     public void updateKingdom(Kingdom kingdom) {

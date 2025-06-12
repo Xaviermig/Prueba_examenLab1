@@ -34,6 +34,7 @@ public class KingdomService {
             throw new NotAcceptableException("Kingdom has been destroyed due to lack of citizens.");
         }
         kingdomRepository.updateKingdom(kingdom);
+
         return kingdom.toDTO();
 
     }

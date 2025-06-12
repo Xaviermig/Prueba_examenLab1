@@ -83,7 +83,7 @@ public class Kingdom {
             food -= citizens;
         } else {
             gold += 2 * food;
-            citizens -= food;
+            citizens -= citizens - food;
             food = 0;
         }
         return citizens == 0;

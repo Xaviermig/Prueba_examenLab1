@@ -3,6 +3,7 @@ package com.tecnocampus.examsimulation.api;
 import com.tecnocampus.examsimulation.application.KingdomService;
 import com.tecnocampus.examsimulation.application.dto.KingdomDTO;
 import com.tecnocampus.examsimulation.utilities.NotAcceptableException;
+import com.tecnocampus.examsimulation.utilities.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,18 +27,16 @@ public class KingdomRestController {
     @ResponseStatus (HttpStatus.OK)
     @Operation (summary = "Create a new Kingdom with ID")
     public KingdomDTO startProduction(@PathVariable String id) throws Exception {
-        return kingdomService.startProduction(id);
-
+        try {
+            return kingdomService.startProduction(id);
+        } catch (NotAcceptableException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Kingdom has been destroyed due to lack of citizens.");
+        }
     }
     @GetMapping("/{id}")
+    @ResponseStatus (HttpStatus.OK)
     public KingdomDTO getKingdomById(@PathVariable String id) {
-        try {
-            return kingdomService.getKingdomById(id);
-
-        } catch (NotAcceptableException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, e.getMessage());
-
-        }
+        return kingdomService.getKingdomById(id);
     }
 
 }
