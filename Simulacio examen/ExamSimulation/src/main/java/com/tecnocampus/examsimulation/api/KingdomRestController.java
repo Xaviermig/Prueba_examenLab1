@@ -6,6 +6,7 @@ import com.tecnocampus.examsimulation.utilities.NotAcceptableException;
 import com.tecnocampus.examsimulation.utilities.NotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,7 +26,7 @@ public class KingdomRestController {
     }
     @PostMapping("/{id}")
     @ResponseStatus (HttpStatus.OK)
-    @Operation (summary = "Create a new Kingdom with ID")
+    @Operation (summary = "Start production in an existent Kingdom")
     public KingdomDTO startProduction(@PathVariable String id) throws Exception {
         try {
             return kingdomService.startProduction(id);
@@ -38,6 +39,21 @@ public class KingdomRestController {
     public KingdomDTO getKingdomById(@PathVariable String id) {
         return kingdomService.getKingdomById(id);
     }
+    @PostMapping ("/{id}/invest")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation (summary = "Invest foood in the Kingdom")
+    public KingdomDTO investKingdom(@PathVariable String id, @RequestParam String type, @RequestBody KingdomDTO kingdomDTO) throws Exception {
+        return kingdomService.investKingdom(id, type, kingdomDTO);
+
+    }
+    @GetMapping("/richest")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation (summary = "Get the richest Kingdom")
+    public KingdomDTO getRichestKingdom() throws Exception {
+    return kingdomService.getRichestKingdom();
+    }
+
+
 
 }
 

@@ -4,6 +4,7 @@ import com.tecnocampus.examsimulation.application.dto.KingdomDTO;
 import com.tecnocampus.examsimulation.domain.Kingdom;
 import com.tecnocampus.examsimulation.persistence.KingdomRepository;
 import com.tecnocampus.examsimulation.utilities.NotAcceptableException;
+import com.tecnocampus.examsimulation.utilities.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -44,6 +45,30 @@ public class KingdomService {
         if (kingdom == null) {
             throw new NotAcceptableException("Kingdom not found with id: " + id);
         }
+        return kingdom.toDTO();
+    }
+
+    public KingdomDTO investKingdom(String id, String type, KingdomDTO kingdomDTO) {
+        Kingdom kingdom = kingdomRepository.getKingdomById(id);
+        if (kingdom == null) {
+            throw new NotFoundException("Kingdom not found with id: " + id);
+        }
+        int goldToInvest = kingdomDTO.gold();
+        if (type.equals("food")) {
+            kingdom.investInFood(goldToInvest);
+        }
+        else if (type.equals("citizens")) {
+            kingdom.investInCitizens(goldToInvest);
+        }else{
+            throw new NotAcceptableException("Investment type not acceptable: " + type);
+        }
+
+        kingdomRepository.updateKingdom(kingdom);
+        return kingdom.toDTO();
+    }
+
+    public KingdomDTO getRichestKingdom() {
+        Kingdom kingdom = kingdomRepository.getRichestKingdom();
         return kingdom.toDTO();
     }
 }

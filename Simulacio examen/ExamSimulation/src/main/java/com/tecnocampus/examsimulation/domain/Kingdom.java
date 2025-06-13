@@ -88,6 +88,20 @@ public class Kingdom {
         }
         return citizens == 0;
     }
+    public void investInFood(int goldToInvest) {
+        if (gold <= goldToInvest) {
+            throw new NotAcceptableException("Not enough gold to invest in food");
+        }
+        food +=  goldToInvest *2;
+        gold -= goldToInvest;
+    }
+    public void investInCitizens(int goldToInvest) {
+        if (gold <= goldToInvest) {
+            throw new NotAcceptableException("Not enough gold to invest in citizens");
+        }
+        citizens += goldToInvest;
+        gold -= goldToInvest;
+    }
 
 
 

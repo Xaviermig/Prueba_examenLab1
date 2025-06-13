@@ -70,4 +70,14 @@ public class KingdomRepository {
             throw new NotFoundException("Customer with id " + id + " not found");
         }
     }
+    public Kingdom getRichestKingdom() {
+        String sql = "SELECT * FROM KINGDOMS ORDER BY gold DESC LIMIT 1";
+
+        return jdbcClient.sql(sql)
+                .query((rs, rowNum) -> new Kingdom(rs))
+                .optional()
+                .orElseThrow(() -> new NotFoundException("No kingdoms found"));
+
+    }
+
 }
