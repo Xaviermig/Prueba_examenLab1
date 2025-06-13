@@ -102,8 +102,23 @@ public class Kingdom {
         citizens += goldToInvest;
         gold -= goldToInvest;
     }
+    public boolean attackKingdom (Kingdom targetKingdom) {
+        if (this.citizens > targetKingdom.getPopulation()) {
+            this.gold += targetKingdom.getGold();
+            this.citizens += targetKingdom.getPopulation() / 2;
+            targetKingdom.setGold(0);
+            targetKingdom.setPopulation(targetKingdom.getPopulation() / 2);
+            return true;
+        } else if (this.citizens <= targetKingdom.getPopulation()) {
+            targetKingdom.setGold(targetKingdom.getGold() + this.gold);
+            targetKingdom.setPopulation(targetKingdom.getPopulation() + (this.citizens / 2));
+            this.gold = 0;
+            this.citizens = this.citizens / 2;
+            return false;
+        }
+        throw new InvalidDataException("Invalid attack parameters");
 
-
+    }
 
     public void updateKingdom(KingdomDTO kingdom) {
         if (kingdom == null) {

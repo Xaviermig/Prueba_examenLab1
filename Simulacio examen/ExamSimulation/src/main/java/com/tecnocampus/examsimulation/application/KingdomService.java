@@ -5,9 +5,7 @@ import com.tecnocampus.examsimulation.domain.Kingdom;
 import com.tecnocampus.examsimulation.persistence.KingdomRepository;
 import com.tecnocampus.examsimulation.utilities.NotAcceptableException;
 import com.tecnocampus.examsimulation.utilities.NotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.SQLException;
 
@@ -71,4 +69,20 @@ public class KingdomService {
         Kingdom kingdom = kingdomRepository.getRichestKingdom();
         return kingdom.toDTO();
     }
-}
+
+    public KingdomDTO attackKingdom(String id, String targetId) {
+        boolean attackResult ;
+        Kingdom offensiveKingdom = kingdomRepository.getKingdomById(id);
+        Kingdom defensiveKingdom = kingdomRepository.getKingdomById(targetId);
+
+            attackResult = offensiveKingdom.attackKingdom(defensiveKingdom);
+            kingdomRepository.updateKingdom(offensiveKingdom);
+            kingdomRepository.updateKingdom(defensiveKingdom);
+
+            return offensiveKingdom.toDTO();
+
+        }
+
+
+    }
+

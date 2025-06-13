@@ -27,7 +27,7 @@ public class KingdomRestController {
     @PostMapping("/{id}")
     @ResponseStatus (HttpStatus.OK)
     @Operation (summary = "Start production in an existent Kingdom")
-    public KingdomDTO startProduction(@PathVariable String id) throws Exception {
+    public KingdomDTO startProduction(@PathVariable String id) {
         try {
             return kingdomService.startProduction(id);
         } catch (NotAcceptableException e) {
@@ -49,8 +49,15 @@ public class KingdomRestController {
     @GetMapping("/richest")
     @ResponseStatus(HttpStatus.OK)
     @Operation (summary = "Get the richest Kingdom")
-    public KingdomDTO getRichestKingdom() throws Exception {
+    public KingdomDTO getRichestKingdom()  {
     return kingdomService.getRichestKingdom();
+    }
+
+    @PostMapping("/{id}/attack/{targetId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Attack another Kingdom")
+    public KingdomDTO attackKingdom (@PathVariable String id, @PathVariable String targetId) throws Exception {
+        return kingdomService.attackKingdom(id, targetId);
     }
 
 
